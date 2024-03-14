@@ -1,32 +1,49 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import Card from "./components/Card/Card";
+import Cart from "./components/Cart/Cart";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
+
+  const [products, setProducts] = useState([]);
+  const [carts, setCarts] = useState([]);
+
   useEffect(() => {
     fetch('cards.json')
     .then(res => res.json())
-    .then(data => console.log(data))
+    .then(data => setProducts(data))
   },[]);
 
+  const handleAddToCart = (product) => {
+    const isExists = carts.find((cart) => cart.id === product.id);
+    if(!isExists) {
+      const newCarts = [...carts, product];
+      setCarts(newCarts);
+    }
+    else {
+      toast.error("Product already exists in cart!");
+    }
+  }
+
+  const handleDeleteCart = (deleteCart) => {
+    const newCarts = carts.filter((cart) => cart.id !== deleteCart.id);
+    setCarts(newCarts);
+  }
+
+
   return (
-    <div className="flex justify-between container mx-auto">
-      <div>
-        <div className="card max-w-96 bg-base-100 shadow-xl">
-          <figure><img src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
-          <div className="card-body">
-            <h2 className="card-title">Shoes!</h2>
-            <p>If a dog chews shoes whose shoes does he choose?</p>
-            <h3 className="text-lg font-semibold">Price: 320$</h3>
-            <div className="card-actions">
-              <button className="btn btn-primary w-full">Buy Now</button>
-            </div>
-          </div>
-        </div>
+    <div className="flex justify-between gap-6 container mx-auto my-24">
+      <div className="grid grid-cols-3 gap-4">
+        {
+          products.map((product) => <Card 
+          key={product.id} product={product} handleAddToCart={handleAddToCart}></Card>)
+        }
       </div>
       <div>
-        <div className="w-[350px] shadow-lg p-6 rounded-lg">
-          <h1>This is cart</h1>
-        </div>
+        <Cart carts={carts} handleDeleteCart={handleDeleteCart}></Cart>
       </div>
+      <ToastContainer />
     </div>
   )
 }
