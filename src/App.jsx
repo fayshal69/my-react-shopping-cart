@@ -20,15 +20,17 @@ function App() {
     if(!isExists) {
       const newCarts = [...carts, product];
       setCarts(newCarts);
+      toast.success(`${product.title.slice(0, 10)} is add to cart!`);
     }
     else {
-      toast.error("Product already exists in cart!");
+      toast.error(`${product.title.slice(0, 10)} is already in cart!`);
     }
   }
 
   const handleDeleteCart = (deleteCart) => {
     const newCarts = carts.filter((cart) => cart.id !== deleteCart.id);
     setCarts(newCarts);
+    toast.warning(`${deleteCart.title.slice(0, 10)} delete from cart!`);
   }
 
 

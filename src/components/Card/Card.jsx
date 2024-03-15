@@ -6,7 +6,7 @@ const Card = ({product, handleAddToCart}) => {
 
     return (
         <div className="card max-w-96 bg-base-100 shadow-xl">
-              <figure><img src={image} alt="Shoes" className='size-[280px]' /></figure>
+              <figure><img src={image} alt="Shoes" className='size-[250px]' /></figure>
               <div className="card-body">
                 <h2 className="card-title">{title.slice(0, 10)}</h2>
                 <p>{description.slice(0, 70)}...</p>
